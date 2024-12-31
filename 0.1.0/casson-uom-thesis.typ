@@ -32,7 +32,7 @@
 
 
 // ------ DEFINE ARGUMENTS ----------------------------------------------
-#let uom_thesis(
+#let uom-thesis(
   title: "",
   abstract: [],
   publications: none,
@@ -341,7 +341,7 @@
 
 // ------ APPENDIX FORMATTING -------------------------------------------
 
-#let uom_appendix(body) = {
+#let uom-appendix(body) = {
   state("appendix").update(true)
 
   // Change figure numbering to use a letter

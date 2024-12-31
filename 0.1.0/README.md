@@ -8,21 +8,21 @@ The template should ultimately be available on Typst Universe as casson_uom_thes
 
 Alternatively, you can download files from the template repository and upload them to your project folder. If doing this, in main.typ comment out
 
-  `#import "@preview/casson_uom_thesis:0.1.0": *`
+  `#import "@preview/casson-uom-thesis:0.1.0": *`
 
 and instead uncomment
 
-  `//#import "casson_uom_thesis.typ": *`
+  `//#import "casson-uom-thesis.typ": *`
 
 
 ## Local installation
 If Typst Universe is online, the template will be downloaded automatically to
 
-  `$CACHEDIR/typst/packages/preview/casson_uom_thesis/$VERSION/`
+  `$CACHEDIR/typst/packages/preview/casson-uom-thesis/$VERSION/`
 
 when you run the command
 
-  `typst init @preview/cason_uom_thesis:$VERSION thesis_project_name`
+  `typst init @preview/cason-uom-thesis:$VERSION thesis_project_name`
 
 $VERSION should be 0.1.0. The value $CACHEDIR for your OS can be discovered from [https://docs.rs/dirs/latest/dirs/fn.cache_dir.html](https://docs.rs/dirs/latest/dirs/fn.cache_dir.html).
 

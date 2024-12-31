@@ -1,9 +1,9 @@
 // ------ TEMPLATE SETUP ------------------------------------------------
-#import "@preview/casson_uom_thesis:0.1.0": *
-//#import "casson_uom_thesis.typ": * // for local installation use
+#import "@preview/casson-uom-thesis:0.1.0": *
+//#import "casson-uom-thesis.typ": * // for local installation use
 
 // Set up the project. Commented out fields are optional
-#show: uom_thesis.with(
+#show: uom-thesis.with(
   title: "A data reduction algorithm incorporating a low power continuous wavelet transform for use in wearable electroencephalography systems",
   author: "Alexander J. Casson",
   faculty: "Science and Engineering",
@@ -79,7 +79,7 @@ This is an example of a quote in text #quote(attribution: cite(<ref:jCAS10>))[Th
 @fig:uom_logo is an example figure. Sub-figures are not currently supported by the temp;ate. There is an example commented out below which uses the subpar package, however the way subpar re-labels the captions is incompatible with how they've been re-labelled already in the template. The commented out example gets relatively close to being correct, but isn't perfect. This will need to be re-visited in a future release. 
 
 #figure(
-  image("example_image.svg", width: 30%, alt: "Put short description for screen readers here"), caption: [
+  image("image.svg", width: 30%, alt: "Put short description for screen readers here"), caption: [
     Example figure. Full caption goes here. Often a short caption in \[\] is used as well as the main caption to keep the list of figures tidy; it gets messy if there are long captions going over more than one line.
   ],
 ) <fig:uom_logo>
@@ -87,13 +87,13 @@ This is an example of a quote in text #quote(attribution: cite(<ref:jCAS10>))[Th
 // #import "@preview/subpar:0.2.0"
 // #subpar.grid(
 //   figure(
-//     image("example_image.svg", width: 100%, alt: "Put short description for screen readers here"), caption: []
+//     image("image.svg", width: 100%, alt: "Put short description for screen readers here"), caption: []
 //   ), <fig:subfig_a>,
 //   figure(
-//     image("example_image.svg", width: 100%, alt: "Put short description for screen readers here"), caption: []
+//     image("image.svg", width: 100%, alt: "Put short description for screen readers here"), caption: []
 //   ), <fig:subfig_b>,
 //   figure(
-//     image("example_image.svg", width: 100%, alt: "Put short description for screen readers here"), caption: []
+//     image("image.svg", width: 100%, alt: "Put short description for screen readers here"), caption: []
 //   ), <fig:subfig_c>,
 //   columns: (1fr, 1fr, 1fr),
 //   caption: [Three copies of the University logo. (a) Copy one. (b) Copy two. (c) Copy three.],
@@ -156,11 +156,11 @@ def my_filter(in,f_obj):
 
 // ------ APPENDICIES ---------------------------------------------------
 #pagebreak() // need to add by hand at the moment for each chapter to start on a new page
-#show: uom_appendix
+#show: uom-appendix
 = First Appendix <first-appendix>
 == Section in Appendix <section-in-appendix>
 #figure(
-  image("example_image.svg", width: 30%, alt: "Put short description for screen readers here"), caption: [
+  image("image.svg", width: 30%, alt: "Put short description for screen readers here"), caption: [
     Example figure in Appendix.
   ],
 ) <fig:uom_logo2>
