@@ -1,1 +1,1 @@
-# uom_phd_thesis_typst_template
+# Typst PhD thesis template for the University of Manchester
