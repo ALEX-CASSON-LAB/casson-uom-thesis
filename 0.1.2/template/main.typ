@@ -27,7 +27,6 @@
 #lorem(60) // add dummy text as a placeholder
 
 
-#pagebreak() // need to add by hand at the moment for each chapter to start on a new page
 = Literature review
 == Introduction
 #lorem(60) // add dummy text as a placeholder
@@ -120,7 +119,6 @@ def my_filter(in,f_obj):
 == Summary
 #lorem(60)
 
-#pagebreak() // need to add by hand at the moment for each chapter to start on a new page
 = Really good work <sec:really_good_work>
 == Introduction
 #lorem(60)
@@ -143,20 +141,17 @@ def my_filter(in,f_obj):
 == Summary
 #lorem(60)
 
-#pagebreak()
 = Conclusions
 #lorem(60)
 
 
 
 // ------ REFERENCES ----------------------------------------------------
-#pagebreak()
 #bibliography("references.yml", style: "ieee", title: "References")
 
 
 
 // ------ APPENDICIES ---------------------------------------------------
-#pagebreak() // need to add by hand at the moment for each chapter to start on a new page
 #show: uom-appendix
 = First Appendix <first-appendix>
 == Section in Appendix <section-in-appendix>
@@ -166,6 +161,5 @@ def my_filter(in,f_obj):
   ],
 ) <fig:uom_logo2>
 
-#pagebreak()
 = Second Appendix <second-appendix>
 == Section in Appendix <section-in-appendix-1>

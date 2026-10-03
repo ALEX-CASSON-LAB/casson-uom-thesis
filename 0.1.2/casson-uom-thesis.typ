@@ -19,7 +19,6 @@
 // Improve code display
 // Add backref if feasible
 // Check on heading spacings
-// Page breaks before headers automatically
 // Add terms list for terms and abbreviations
 // Add ability to overrule declaration of originality
 // Find nicer way to enter abstract etc
@@ -43,6 +42,7 @@
   layabstract: none,
   acknowledgements: none,
   theauthor: none,
+  chapterbreak: true,
   author: "",
   faculty: none,
   year: none,
@@ -97,8 +97,11 @@
   
 // ------ HEADING STYLES ------------------------------------------------
 
-  // Level 1 for Chapters
+  // Level 1 for Chapters, each on a new page. A page break can't go inside a
+  // box, block or grid, so chapterbreak: false turns this off for a thesis
+  // that needs a chapter heading inside one (and uom-appendix takes it too).
   show heading.where(level: 1): it => {
+    if chapterbreak { pagebreak(weak: true) }
     v(2*2.26em)
     set align(left)
     set text(2.26em, weight: "bold")
@@ -356,7 +359,9 @@
 // ------ APPENDIX FORMATTING -------------------------------------------
 
 // The label on the whole of the appendices keeps them out of the word count.
-#let uom-appendix(body) = [#{
+// chapterbreak: false stops each appendix starting on a new page, as for the
+// chapters in uom-thesis.
+#let uom-appendix(body, chapterbreak: true) = [#{
   state("appendix").update(true)
 
   // Change figure and equation numbering to use a letter. Anything before
@@ -379,6 +384,7 @@
   state("appendix").update(true)
 
   show heading.where(level: 1): it => {
+    if chapterbreak { pagebreak(weak: true) }
     v(2*2.26em)
     set align(left)
     set text(2.26em, weight: "bold")
