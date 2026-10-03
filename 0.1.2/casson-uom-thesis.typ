@@ -7,6 +7,7 @@
 // 03.10.26 - v3 - accessibility fixes so the PDF passes Typst's PDF/UA-1 check (Typst 0.14 and later): the contents entries are styled with set rules so they stay valid outline entries, and the logo has alt text.
 //                 Also fixes for figures with no number, appendix numbering, labelled footnotes, and the word count, which now counts the main text only and sits at the bottom of the contents page. Chapters start on a new page, block quotes are indented, sub-figures are supported through uom-subfigures, and the language is British English.
 //                 Updated for version 12 of the Presentation of Theses Policy (March 2026): The University on the title page, a degree option, the COVID-19 impact statement, both forms of the declaration, the copyright wording, and pages for the list of thesis revisions, AI declaration and content notification.
+//                 Drafting tools: draft mode with DRAFT across each page, uom-todo and uom-missing-figure, and a check that none are left outside draft mode. Short captions for the lists of figures and tables (uom-flex-caption).
 // 04.05.25 - v2 - added fixes for Typst 0.13 compatability. outline command changed, and some header spacing changed.
 // 30.12.24 - v1 - initial version. Fundamentally complete, but with a number of non-ideal and/or to-do items. Lots of items are hard coded.
 //
