@@ -49,6 +49,7 @@
   school: none,
   departmentordivision: none,
   degree: "Doctor of Philosophy",
+  covidstatement: none,
   font: "TeX Gyre Termes",
   fontsize: 12pt,
   body,
@@ -222,6 +223,21 @@
 
 
 // ------ START OF DISPLAYED ITEMS --------------------------------------
+
+
+
+// ------ COVID-19 IMPACT STATEMENT -------------------------------------
+
+  // Optional. It goes immediately before the title page, has no page number,
+  // and is taken out of the final version after the examination (policy 8.1a,
+  // 7.5 and section 10).
+  if covidstatement != none {
+    heading(outlined: false, bookmarked: true, numbering: none, level: 1, [COVID-19 impact statement])
+    v(-5em) // as for the preliminary pages below
+    covidstatement
+    pagebreak()
+    counter(page).update(1) // the title page is still page 1 (policy 7.4)
+  }
 
 
 
