@@ -16,7 +16,6 @@
 // Fix table bottom row
 // Equation no. in text in wrong mode
 // Remove table/fig from LOT/LOF?
-// Add support for short captions for LOT/LOF
 // Improve code display
 // Add backref if feasible
 // Check on heading spacings
@@ -30,6 +29,18 @@
 // ------ ADD PACKAGES --------------------------------------------------
 #import "@preview/wordometer:0.1.6": word-count, total-words
 #import "@preview/subpar:0.2.2"
+
+
+
+// ------ SHORT CAPTIONS ------------------------------------------------
+
+// A caption with a short form for the lists of figures and tables, like
+// \caption[short]{long} in LaTeX:
+//   caption: uom-flex-caption([The full caption under the figure.], [Short version])
+// The word count can't see inside a context block, so it gets a copy of the
+// long caption that is never shown.
+#let uom-in-outline = state("uom-in-outline", false)
+#let uom-flex-caption(long, short) = [#block(long)<uom-count-only>#context if uom-in-outline.get() { short } else { long }]
 
 
 
@@ -65,7 +76,7 @@
   
   // Document meta-data
   state("maincontent").update(true)
-  show <uom-count-only>: none // copies of text that only the word count sees (see uom-subfigures)
+  show <uom-count-only>: none // copies of text that only the word count sees (see uom-flex-caption and uom-subfigures)
   set document(author: author, title: title)
 
   // Page size and numbering
@@ -294,6 +305,7 @@
   // These are set rules rather than a show rule that wraps each entry, so
   // the entries stay valid outline entries for screen readers (PDF/UA-1).
   show outline: set heading(outlined: true, numbering: none, level: 1)
+  show outline: it => { uom-in-outline.update(true); it; uom-in-outline.update(false) } // for uom-flex-caption
   {
     show outline.entry.where(level: 1): set outline.entry(fill: none)
     show outline.entry.where(level: 1): set block(above: 1.2em)

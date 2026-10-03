@@ -85,9 +85,10 @@ This is an example of a quote in text #quote(attribution: cite(<ref:jCAS10>))[Th
 @fig:uom_logo is an example figure. @fig:uom_logo_in_subfig is an example of a figure made of sub-figures, using the subpar package, and a reference to one part of it looks like @fig:subfig_b.
 
 #figure(
-  image("image.svg", width: 30%, alt: "Put short description for screen readers here"), caption: [
-    Example figure. Full caption goes here. Often a short caption in \[\] is used as well as the main caption to keep the list of figures tidy; it gets messy if there are long captions going over more than one line.
-  ],
+  image("image.svg", width: 30%, alt: "Put short description for screen readers here"), caption: uom-flex-caption(
+    [Example figure. Full caption goes here. A short caption is given as well, which goes in the list of figures to keep it tidy; it gets messy if there are long captions going over more than one line.],
+    [Example figure],
+  ),
 ) <fig:uom_logo>
 
 #uom-subfigures(
