@@ -48,6 +48,7 @@
   year: none,
   school: none,
   departmentordivision: none,
+  degree: "Doctor of Philosophy",
   font: "TeX Gyre Termes",
   fontsize: 12pt,
   body,
@@ -233,7 +234,7 @@
   set align(center)
   text(1.44em, weight: "bold", title)
   v(1fr)
-  text(1em, "A thesis submitted to the University of Manchester for the degree of \n Doctor of Philosophy \n in the Faculty of ")
+  text(1em, "A thesis submitted to The University of Manchester for the degree of \n " + degree + " \n in the Faculty of ")
   text(1em, faculty)
   v(1fr)
   text(1em, year)
