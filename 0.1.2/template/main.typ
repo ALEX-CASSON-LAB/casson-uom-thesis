@@ -9,7 +9,9 @@
   faculty: "Science and Engineering",
   school: "School of Engineering",
   departmentordivision: "Department of Electrical and Electronic Engineering",
-  // degree: "Master of Philosophy", // the full title of the degree. Doctor of Philosophy if left out
+  // report: "taught-dissertation", // for a BEng, MEng or taught MSc dissertation, or "research-dissertation" for an MSc by Research. A thesis if left out
+  // studentid: "12345678", // a taught dissertation shows the student ID instead of the name. For a group, give a list: ("12345678", "23456789")
+  // degree: "Master of Philosophy", // the full title of the degree. If left out, Doctor of Philosophy for a thesis or Master of Science by Research for an MSc by Research. It has to be given for a taught dissertation
   // covidstatement: [COVID-19 impact statement goes here], // uncomment if want in thesis. It goes before the title page, and comes out of the final version after the examination
   abstract: [Abstract goes here],
   publications: [Publications go here.],
@@ -23,7 +25,7 @@
   // contentnotification: [Content notification goes here], // uncomment if want in thesis
   year: "2024",
   font: "times", // choices are: "times", "palatino", "roboto", "noto_sans" 
-  fontsize: 11pt, // can be any reasonable value
+  fontsize: 11pt, // can be any reasonable value, though the policy recommends 12pt, and a taught dissertation needs at least 12pt
   // draft: true, // while writing: puts DRAFT across each page, and allows #uom-todo[...] and #uom-missing-figure([...])
 )
 
