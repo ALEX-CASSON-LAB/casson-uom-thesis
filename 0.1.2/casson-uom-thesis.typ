@@ -50,6 +50,9 @@
   degree: "Doctor of Philosophy",
   covidstatement: none,
   declaration: none,
+  revisions: none,
+  aideclaration: none,
+  contentnotification: none,
   font: "TeX Gyre Termes",
   fontsize: 12pt,
   body,
@@ -226,6 +229,22 @@
 
 
 
+// ------ LIST OF THESIS REVISIONS --------------------------------------
+
+  // For a resubmitted thesis only. It goes before the title page and any
+  // COVID-19 impact statement, and is taken out of the final version after
+  // the re-examination (policy 8.1h). Like the impact statement it has no
+  // page number.
+  if revisions != none {
+    heading(outlined: false, bookmarked: true, numbering: none, level: 1, [List of thesis revisions])
+    v(-5em) // as for the preliminary pages below
+    revisions
+    pagebreak()
+    counter(page).update(1) // the title page is still page 1 (policy 7.4)
+  }
+
+
+
 // ------ COVID-19 IMPACT STATEMENT -------------------------------------
 
   // Optional. It goes immediately before the title page, has no page number,
@@ -356,6 +375,9 @@
   enum[The author of this thesis (including any appendices and/or schedules to this thesis) owns certain copyright or related rights in it (the "Copyright") and they have given the University of Manchester certain rights to use such Copyright, including for administrative purposes.][Copies of this thesis, either in full or in extracts and whether in hard or electronic copy, may be made only in accordance with the Copyright, Designs and Patents Act 1988 (as amended) and regulations issued under it or, where appropriate, in accordance with licensing agreements which the University has from time to time. This page must form part of any such copies made.][The ownership of certain Copyright, patents, designs, trademarks and other intellectual property (the "Intellectual Property") and any reproductions of copyright works in the thesis, for example graphs and tables ("Reproductions"), which may be described in this thesis, may not be owned by the author and may be owned by third parties. Such Intellectual Property and Reproductions cannot and must not be made available for use without the prior written permission of the owner(s) of the relevant Intellectual Property and/or Reproductions.][Further information on the conditions under which disclosure, publication and commercialisation of this thesis, the Copyright and any Intellectual Property and/or Reproductions described in it may take place is available in the University IP Policy, in any relevant Thesis restriction declarations deposited in the University Library, the University Library's regulations and in the University's policy on the Presentation of Theses.]
   pagebreak()
 
+  // Optional pages (policy 9.1). Acknowledgements and similar have to come
+  // after the compulsory pages.
+
   if acknowledgements != none {
     heading(outlined: true, numbering: none, level: 1,[Acknowledgements])
     v(-5em) // added for Typst 0.13. Somewhat hacky. Not clear why spacing doesn't come from the heading correct without this. Will look at at some point
@@ -367,6 +389,20 @@
     heading(outlined: true, numbering: none, level: 1,[The author])
     v(-5em) // added for Typst 0.13. Somewhat hacky. Not clear why spacing doesn't come from the heading correct without this. Will look at at some point
     theauthor
+    pagebreak()
+  }
+
+  if aideclaration != none {
+    heading(outlined: true, numbering: none, level: 1,[AI declaration])
+    v(-5em) // added for Typst 0.13. Somewhat hacky. Not clear why spacing doesn't come from the heading correct without this. Will look at at some point
+    aideclaration
+    pagebreak()
+  }
+
+  if contentnotification != none {
+    heading(outlined: true, numbering: none, level: 1,[Content notification])
+    v(-5em) // added for Typst 0.13. Somewhat hacky. Not clear why spacing doesn't come from the heading correct without this. Will look at at some point
+    contentnotification
     pagebreak()
   }
 
