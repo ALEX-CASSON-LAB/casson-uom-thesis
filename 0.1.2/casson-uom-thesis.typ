@@ -11,7 +11,6 @@
 // TODO
 // Space under Contents heading is too small, not like others
 // URL style
-// Indent on quotes
 // Fix table bottom row
 // Equation no. in text in wrong mode
 // Remove table/fig from LOT/LOF?
@@ -212,11 +211,10 @@
     ["] + h(0pt, weak: true) + emph(it.body) + h(0pt, weak: true) + ["]
     if it.attribution != none [ #it.attribution]
   }
-  show quote.where(block: true): it => {
-    set pad(x: 10em)  
+  show quote.where(block: true): it => pad(x: 2.5em, { // indented both sides, as in LaTeX
     ["] + h(0pt, weak: true) + emph(it.body) + h(0pt, weak: true) + ["]
     if it.attribution != none [ #it.attribution]
-  }
+  })
 
 
 // ------ START OF DISPLAYED ITEMS --------------------------------------
