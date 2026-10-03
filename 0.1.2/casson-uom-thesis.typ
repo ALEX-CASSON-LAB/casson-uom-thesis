@@ -20,7 +20,6 @@
 // Add backref if feasible
 // Check on heading spacings
 // Add terms list for terms and abbreviations
-// Add ability to overrule declaration of originality
 // Find nicer way to enter abstract etc
 // Add XMP copyright when can
 // Look into heading spacing after the heading. There are a number of manual fixes in the below
@@ -50,6 +49,7 @@
   departmentordivision: none,
   degree: "Doctor of Philosophy",
   covidstatement: none,
+  declaration: none,
   font: "TeX Gyre Termes",
   fontsize: 12pt,
   body,
@@ -335,11 +335,18 @@
     layabstract
   }
   
-  // Declaration of originality
+  // Declaration of originality. The policy (8.1f) gives two forms. The
+  // standard text below is the first, for when no part of the work has been
+  // submitted for another degree. If part of it has, give declaration instead,
+  // saying which part, including any jointly authored work.
   pagebreak()
   heading(outlined: true, numbering: none, level: 1,[Declaration of originality])
   v(-5em) // added for Typst 0.13. Somewhat hacky. Not clear why spacing doesn't come from the heading correct without this. Will look at at some point
-  "I hereby confirm that no portion of the work referred to in the thesis has been submitted in support of an application for another degree or qualification of this or any other university or other institute of learning."
+  if declaration != none {
+    declaration
+  } else {
+    "I hereby confirm that no portion of the work referred to in the thesis has been submitted in support of an application for another degree or qualification of this or any other university or other institute of learning."
+  }
   
   // Copyright statement
   pagebreak()
