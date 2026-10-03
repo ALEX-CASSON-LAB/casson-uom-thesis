@@ -76,7 +76,7 @@ This is an example of a quote in text #quote(attribution: cite(<ref:jCAS10>))[Th
   Electrodes are placed on the scalp to detect the microvolt-sized signals that result from synchronized neuronal activity within the brain.
 ]
 
-@fig:uom_logo is an example figure. Sub-figures are not currently supported by the temp;ate. There is an example commented out below which uses the subpar package, however the way subpar re-labels the captions is incompatible with how they've been re-labelled already in the template. The commented out example gets relatively close to being correct, but isn't perfect. This will need to be re-visited in a future release. 
+@fig:uom_logo is an example figure. @fig:uom_logo_in_subfig is an example of a figure made of sub-figures, using the subpar package, and a reference to one part of it looks like @fig:subfig_b.
 
 #figure(
   image("image.svg", width: 30%, alt: "Put short description for screen readers here"), caption: [
@@ -84,24 +84,20 @@ This is an example of a quote in text #quote(attribution: cite(<ref:jCAS10>))[Th
   ],
 ) <fig:uom_logo>
 
-// #import "@preview/subpar:0.2.0"
-// #subpar.grid(
-//   figure(
-//     image("image.svg", width: 100%, alt: "Put short description for screen readers here"), caption: []
-//   ), <fig:subfig_a>,
-//   figure(
-//     image("image.svg", width: 100%, alt: "Put short description for screen readers here"), caption: []
-//   ), <fig:subfig_b>,
-//   figure(
-//     image("image.svg", width: 100%, alt: "Put short description for screen readers here"), caption: []
-//   ), <fig:subfig_c>,
-//   columns: (1fr, 1fr, 1fr),
-//   caption: [Three copies of the University logo. (a) Copy one. (b) Copy two. (c) Copy three.],
-//   label: <fig:uom_logo_in_subfig>,
-//   numbering: num => (
-//     numbering("1.1", counter(heading).get().first(), num)
-//   ),
-// )
+#uom-subfigures(
+  figure(
+    image("image.svg", width: 100%, alt: "Put short description for screen readers here"), caption: []
+  ), <fig:subfig_a>,
+  figure(
+    image("image.svg", width: 100%, alt: "Put short description for screen readers here"), caption: []
+  ), <fig:subfig_b>,
+  figure(
+    image("image.svg", width: 100%, alt: "Put short description for screen readers here"), caption: []
+  ), <fig:subfig_c>,
+  columns: (1fr, 1fr, 1fr),
+  caption: [Three copies of the University logo. (a) Copy one. (b) Copy two. (c) Copy three.],
+  label: <fig:uom_logo_in_subfig>,
+)
 
 
 An example code listing is given below. Code in the body of the text can be included as `for` or `while` or `main`. This is just using the built in Typst functionality which is fairly limited. Could look at #link("https://typst.app/universe/package/codly/") or similar to give more functionality such as line numbers, ability to link to a piece of code, and similar.

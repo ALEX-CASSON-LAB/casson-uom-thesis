@@ -21,7 +21,6 @@
 // Add terms list for terms and abbreviations
 // Add ability to overrule declaration of originality
 // Find nicer way to enter abstract etc
-// Add in subfigure example
 // Add XMP copyright when can
 // Look into heading spacing after the heading. There are a number of manual fixes in the below
 
@@ -29,6 +28,7 @@
 
 // ------ ADD PACKAGES --------------------------------------------------
 #import "@preview/wordometer:0.1.6": word-count, total-words
+#import "@preview/subpar:0.2.2"
 
 
 
@@ -58,6 +58,7 @@
   
   // Document meta-data
   state("maincontent").update(true)
+  show <uom-count-only>: none // copies of text that only the word count sees (see uom-subfigures)
   set document(author: author, title: title)
 
   // Page size and numbering
@@ -429,3 +430,37 @@
   pagebreak()
   body
 } <uom-appendices>]
+
+
+
+// ------ SUB-FIGURES ---------------------------------------------------
+
+// A figure made of several parts, using the subpar package. It is numbered
+// like any other figure (Fig. 1.2, or Fig. A.2 in an appendix), the parts are
+// labelled (a), (b) and so on, and a reference to a part reads Fig. 1.2a. It
+// takes the same arguments as subpar.grid.
+#let uom-subfigures(..args) = {
+  // Numbers that follow the chapter, or the appendix letter
+  let by-chapter(main, appendix, before-appendix) = (..num) => {
+    let chapter = counter(heading).get().first()
+    if state("appendix").get() != true { numbering(main, chapter, ..num) }
+    else if chapter == 0 { numbering(before-appendix, ..num) }
+    else { numbering(appendix, chapter, ..num) }
+  }
+  let kind = args.named().at("kind", default: image)
+
+  // subpar draws the figure inside a context block, which the word count
+  // can't see into, so the word count gets a copy of the captions here.
+  // The copy is never shown.
+  [#block({
+    for part in args.pos() { if type(part) == content { part } }
+    args.named().at("caption", default: none)
+  })<uom-count-only>]
+
+  subpar.grid(
+    numbering: by-chapter("1.1", "A.1", "1"),
+    numbering-sub-ref: by-chapter("1.1a", "A.1a", "1a"),
+    ..if kind == image { (supplement: [Fig.]) },
+    ..args,
+  )
+}
