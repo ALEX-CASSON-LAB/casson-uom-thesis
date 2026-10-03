@@ -181,16 +181,18 @@
     numbering("1.1", counter(heading).get().first(), num)
   )
 
-  // Set both the caption and references to use the custom settings
-  show figure: fig => {
+  // Caption labels, such as "Fig. 1.1." and "Table 1.1.", in bold. This is a
+  // caption rule rather than a figure rule, so that a figure with no number
+  // works, and so that subpar can label the parts of a sub-figure itself.
+  show figure.caption: it => {
+    if it.numbering == none { return it.body }
     let prefix = (
-      if fig.kind == table [Table]
-      else if fig.kind == image [#figure-supplement]
-      else [#fig.supplement]
+      if it.kind == table [Table]
+      else if it.kind == image [#figure-supplement]
+      else [#it.supplement]
     )
-    let numbers = numbering(fig.numbering, ..fig.counter.at(fig.location()))
-    show figure.caption: it => [#text(prefix + " " +  numbers + ".", weight: "bold") #it.body]
-    fig
+    let numbers = numbering(it.numbering, ..it.counter.at(it.location()))
+    [#text(prefix + " " +  numbers + ".", weight: "bold") #it.body]
   }
 
   // Equation numbering
