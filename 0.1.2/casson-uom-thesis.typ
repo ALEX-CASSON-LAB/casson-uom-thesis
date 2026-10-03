@@ -30,7 +30,7 @@
 
 
 // ------ ADD PACKAGES --------------------------------------------------
-#import "@preview/wordometer:0.1.4": word-count, total-words
+#import "@preview/wordometer:0.1.6": word-count, total-words
 
 
 
@@ -260,9 +260,11 @@
     outline(depth: 3, indent: auto)
   }
 
-  // Add word count
-  show: word-count
-  align(right, block[
+  // Word count, at the bottom of the contents page (policy 8.1c). It counts
+  // the main text only (policy 4.6): the chapters, including footnotes, but
+  // not the preliminary pages, the bibliography or the appendices. The count
+  // is taken from the body at the end of this function.
+  align(right + bottom, block[
     #text("Word count: ",  weight: "bold")
     #text(total-words)
   ])
@@ -345,6 +347,7 @@
 // ------ MAIN BODY ---------------------------------------------
 
   set text(hyphenate: true)
+  show: word-count.with(exclude: <uom-appendices>)
   body
 }
 
@@ -352,7 +355,8 @@
 
 // ------ APPENDIX FORMATTING -------------------------------------------
 
-#let uom-appendix(body) = {
+// The label on the whole of the appendices keeps them out of the word count.
+#let uom-appendix(body) = [#{
   state("appendix").update(true)
 
   // Change figure and equation numbering to use a letter. Anything before
@@ -420,4 +424,4 @@
   heading(outlined: true, numbering: none, level: 1,[Appendices])
   pagebreak()
   body
-}
+} <uom-appendices>]
