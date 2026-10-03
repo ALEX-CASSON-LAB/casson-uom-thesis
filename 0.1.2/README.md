@@ -3,6 +3,8 @@
 Typst template based upon [The University of Manchester Presentation of Theses Policy](https://documents.manchester.ac.uk/display.aspx?DocID=7420) which relates to the examination of doctoral and MPhil degrees at The University of Manchester and applies to full-time and part-time postgraduate research students of the following degrees: Doctoral degrees: Doctor of Philosophy (PhD); Doctor of Medicine (MD) Doctor of Business Administration (DBA); Professional, Engineering and Enterprise Doctorates; Master of Philosophy (MPhil). This template has been checked to be compliant with the 2024 requirements. Responsibility for ensuring compliance with the University of Manchester Presentation of Theses Policy remains with the candidate.
 
 
+The template needs Typst 0.14 or later.
+
 ## Using the template on typst.app
 The template should ultimately be available on Typst Universe as casson_uom_thesis. Create an account at [Typst.app](https://typst.app/) and start a new project by clicking on Start from template and searching for casson_uom_thesis.
 
@@ -35,6 +37,18 @@ or
  `typst compile --pdf-standard a-2b main.typ`
 
 to compile the document .
+
+
+## Accessible PDFs
+With Typst 0.14 or later the template passes Typst's PDF/UA-1 accessibility check. To export an accessible PDF, run
+
+  `typst compile --pdf-standard ua-1 main.typ`
+
+or, with Typst 0.15 or later, for a PDF that is both archival and accessible
+
+  `typst compile --pdf-standard a-2a,ua-1 main.typ`
+
+PDF/UA-1 needs alt text on every image and equation. main.typ shows how to add it.
 
 
 ## Usage

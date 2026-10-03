@@ -64,11 +64,12 @@ table(
 caption: [Probe results for design A.],
 )<table:example_tabular>
 
-This is an example equation in text $2 sin omega t$. @equ:example_equation is an example of a displayed equation.
+// For an accessible PDF (PDF/UA-1), give each equation alt text as below.
+This is an example equation in text #math.equation(alt: "2 sine omega t", $2 sin omega t$). @equ:example_equation is an example of a displayed equation.
 
-$ a^2 + b^2 = c^2 $ <equ:example_equation>
+#math.equation(block: true, alt: "a squared plus b squared equals c squared", $ a^2 + b^2 = c^2 $) <equ:example_equation>
 
-Note that numbers are displayed differently in the text depending on how they are entered. Compare for example 123456 vs. $123456$. Entering numbers directly, such as 1955, should be used for _text mode_ numbers. That is, those representing text (dates, page numbers, and similar). Numbers representing maths, or variables or similar, should be entered inside \$ \$ so they are typeset in the same way as they appear in an equation. (This requires a bit of discipline, but helps ensure consistent use of number styles throughout.)
+Note that numbers are displayed differently in the text depending on how they are entered. Compare for example 123456 vs. #math.equation(alt: "123456", $123456$). Entering numbers directly, such as 1955, should be used for _text mode_ numbers. That is, those representing text (dates, page numbers, and similar). Numbers representing maths, or variables or similar, should be entered inside \$ \$ so they are typeset in the same way as they appear in an equation. (This requires a bit of discipline, but helps ensure consistent use of number styles throughout.)
 
 This is an example of a quote in text #quote(attribution: cite(<ref:jCAS10>))[The electroencephalogram (EEG) is a classic non-invasive method for measuring a person’s brainwaves]. Below is an example of a displayed quote. 
 

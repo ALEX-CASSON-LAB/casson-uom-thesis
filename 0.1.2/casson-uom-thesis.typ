@@ -4,6 +4,7 @@
 // Typst template in-line with the University of Manchester presentation of theses policy
 //
 // Versions
+// 03.10.26 - v3 - accessibility fixes so the PDF passes Typst's PDF/UA-1 check (Typst 0.14 and later): the contents entries are styled with set rules so they stay valid outline entries, and the logo has alt text.
 // 04.05.25 - v2 - added fixes for Typst 0.13 compatability. outline command changed, and some header spacing changed.
 // 30.12.24 - v1 - initial version. Fundamentally complete, but with a number of non-ideal and/or to-do items. Lots of items are hard coded.
 //
@@ -220,7 +221,7 @@
 // ------ TTILE PAGE ----------------------------------------------------
 
   place(dx: -40mm+14.279mm, dy:-15mm+14.279mm,
-    image("uom_logo.svg", width: 40.006mm)
+    image("uom_logo.svg", width: 40.006mm, alt: "The University of Manchester logo")
   )
   v(2fr)
   set align(center)
@@ -246,21 +247,16 @@
 // ------ LISTS OF CONTENTS ---------------------------------------------
 
   // Set contents formatting
-  show outline.entry.where(level: 1): it => {
-    if it.element.func() != heading {
-      it
-    }
-    else {
-      show repeat: none
-      v(1.2em, weak: true)
-      strong(it)
-    }
-  }
-
-  // Contents
+  // Contents. Chapter entries are bold, with no dot leaders and a gap above.
+  // These are set rules rather than a show rule that wraps each entry, so
+  // the entries stay valid outline entries for screen readers (PDF/UA-1).
   show outline: set heading(outlined: true, numbering: none, level: 1)
-  // outline(depth: 3, indent: true)
-  outline(depth: 3, indent: auto)
+  {
+    show outline.entry.where(level: 1): set outline.entry(fill: none)
+    show outline.entry.where(level: 1): set block(above: 1.2em)
+    show outline.entry.where(level: 1): set text(weight: "bold")
+    outline(depth: 3, indent: auto)
+  }
 
   // Add word count
   show: word-count

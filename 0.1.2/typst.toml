@@ -8,6 +8,7 @@ description = "Typst template based upon The University of Manchester Presentati
 repository = "https://github.com/ALEX-CASSON-LAB/uom_phd_thesis_typst_template"
 keywords = ["University of Manchester", "UK", "PhD", "thesis"]
 categories = ["thesis"]
+compiler = "0.14.0"
 
 [template]
 path = "template"
