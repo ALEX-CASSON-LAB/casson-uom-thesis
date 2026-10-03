@@ -87,7 +87,8 @@
   set text(
     font: font_actual, 
     size: fontsize,
-    lang: "en", // doesn't support en-GB yet
+    lang: "en",
+    region: "GB", // British English, for screen readers and the bibliography
   )
   set heading(numbering: "1.1")
   set par(leading: 1.2em) // line spacing
