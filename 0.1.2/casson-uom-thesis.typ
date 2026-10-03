@@ -355,23 +355,22 @@
 #let uom-appendix(body) = {
   state("appendix").update(true)
 
-  // Change figure numbering to use a letter
+  // Change figure and equation numbering to use a letter. Anything before
+  // the first appendix heading is just numbered 1, 2 and so on.
   set figure(numbering: it => {
     let alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     let hdr = counter(heading).get().at(0)
-    [#alph.at(hdr - 1).#it]
+    if hdr == 0 { [#it] } else { [#alph.at(hdr - 1).#it] }
   })
-
-  // Reset counters for the per-chapter references
-  show heading.where(level: 1): hdr => {
-    counter(figure.where(kind:image)).update(0)
-    counter(figure.where(kind:table)).update(0)
-    hdr
-  }
+  set math.equation(numbering: num => {
+    let hdr = counter(heading).get().first()
+    if hdr == 0 { numbering("(1)", num) } else { numbering("(A.1)", hdr, num) }
+  })
 
   // Set headings to use Appendix letters
   // This can probably be tidied up, is largely a copy of what is above
   set heading(numbering: "A.1", supplement: [Appendix])
+  show heading.where(level: 1): set heading(supplement: [Appendix]) // otherwise references say Chapter A
   counter(heading).update(0)
   state("appendix").update(true)
 
@@ -404,6 +403,17 @@
     set text(1.1em, weight: "bold")
     text(counter(heading).display("A.1") + " " + it.body)
     v(0.9em)
+  }
+
+  // Reset counters for the per-appendix references. This has to come after
+  // the heading styles above: it then runs first and passes the heading on to
+  // them, whereas a rule before them is never reached.
+  show heading.where(level: 1): hdr => {
+    counter(math.equation).update(0)
+    counter(figure.where(kind: image)).update(0)
+    counter(figure.where(kind: table)).update(0)
+    counter(figure.where(kind: raw)).update(0)
+    hdr
   }
 
   // Add appendicies heading and then add the content
