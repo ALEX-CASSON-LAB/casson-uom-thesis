@@ -6,6 +6,7 @@
 // Versions
 // 03.10.26 - v3 - accessibility fixes so the PDF passes Typst's PDF/UA-1 check (Typst 0.14 and later): the contents entries are styled with set rules so they stay valid outline entries, and the logo has alt text.
 //                 Also fixes for figures with no number, appendix numbering, labelled footnotes, and the word count, which now counts the main text only and sits at the bottom of the contents page. Chapters start on a new page, block quotes are indented, sub-figures are supported through uom-subfigures, and the language is British English.
+//                 Updated for version 12 of the Presentation of Theses Policy (March 2026): The University on the title page, a degree option, the COVID-19 impact statement, both forms of the declaration, the copyright wording, and pages for the list of thesis revisions, AI declaration and content notification.
 // 04.05.25 - v2 - added fixes for Typst 0.13 compatability. outline command changed, and some header spacing changed.
 // 30.12.24 - v1 - initial version. Fundamentally complete, but with a number of non-ideal and/or to-do items. Lots of items are hard coded.
 //
@@ -20,7 +21,6 @@
 // Add backref if feasible
 // Check on heading spacings
 // Add terms list for terms and abbreviations
-// Add ability to overrule declaration of originality
 // Find nicer way to enter abstract etc
 // Add XMP copyright when can
 // Look into heading spacing after the heading. There are a number of manual fixes in the below
@@ -48,6 +48,12 @@
   year: none,
   school: none,
   departmentordivision: none,
+  degree: "Doctor of Philosophy",
+  covidstatement: none,
+  declaration: none,
+  revisions: none,
+  aideclaration: none,
+  contentnotification: none,
   font: "TeX Gyre Termes",
   fontsize: 12pt,
   body,
@@ -224,6 +230,37 @@
 
 
 
+// ------ LIST OF THESIS REVISIONS --------------------------------------
+
+  // For a resubmitted thesis only. It goes before the title page and any
+  // COVID-19 impact statement, and is taken out of the final version after
+  // the re-examination (policy 8.1h). Like the impact statement it has no
+  // page number.
+  if revisions != none {
+    heading(outlined: false, bookmarked: true, numbering: none, level: 1, [List of thesis revisions])
+    v(-5em) // as for the preliminary pages below
+    revisions
+    pagebreak()
+    counter(page).update(1) // the title page is still page 1 (policy 7.4)
+  }
+
+
+
+// ------ COVID-19 IMPACT STATEMENT -------------------------------------
+
+  // Optional. It goes immediately before the title page, has no page number,
+  // and is taken out of the final version after the examination (policy 8.1a,
+  // 7.5 and section 10).
+  if covidstatement != none {
+    heading(outlined: false, bookmarked: true, numbering: none, level: 1, [COVID-19 impact statement])
+    v(-5em) // as for the preliminary pages below
+    covidstatement
+    pagebreak()
+    counter(page).update(1) // the title page is still page 1 (policy 7.4)
+  }
+
+
+
 // ------ TTILE PAGE ----------------------------------------------------
 
   place(dx: -40mm+14.279mm, dy:-15mm+14.279mm,
@@ -233,7 +270,7 @@
   set align(center)
   text(1.44em, weight: "bold", title)
   v(1fr)
-  text(1em, "A thesis submitted to the University of Manchester for the degree of \n Doctor of Philosophy \n in the Faculty of ")
+  text(1em, "A thesis submitted to The University of Manchester for the degree of \n " + degree + " \n in the Faculty of ")
   text(1em, faculty)
   v(1fr)
   text(1em, year)
@@ -318,19 +355,29 @@
     layabstract
   }
   
-  // Declaration of originality
+  // Declaration of originality. The policy (8.1f) gives two forms. The
+  // standard text below is the first, for when no part of the work has been
+  // submitted for another degree. If part of it has, give declaration instead,
+  // saying which part, including any jointly authored work.
   pagebreak()
   heading(outlined: true, numbering: none, level: 1,[Declaration of originality])
   v(-5em) // added for Typst 0.13. Somewhat hacky. Not clear why spacing doesn't come from the heading correct without this. Will look at at some point
-  "I hereby confirm that no portion of the work referred to in the thesis has been submitted in support of an application for another degree or qualification of this or any other university or other institute of learning."
+  if declaration != none {
+    declaration
+  } else {
+    "I hereby confirm that no portion of the work referred to in the thesis has been submitted in support of an application for another degree or qualification of this or any other university or other institute of learning."
+  }
   
-  // Copyright statement
+  // Copyright statement, worded as in version 12 of the policy (8.1g)
   pagebreak()
   heading(outlined: true, numbering: none, level: 1,[Copyright statement])
   v(-5em) // added for Typst 0.13. Somewhat hacky. Not clear why spacing doesn't come from the heading correct without this. Will look at at some point
   set enum(numbering: "i.")
-  enum[The author of this thesis (including any appendices and/or schedules to this thesis) owns certain copyright or related rights in it (the "Copyright") and s/he has given The University of Manchester certain rights to use such Copyright, including for administrative purposes.][Copies of this thesis, either in full or in extracts and whether in hard or electronic copy, may be made _only_ in accordance with the Copyright, Designs and Patents Act 1988 (as amended) and regulations issued under it or, where appropriate, in accordance with licensing agreements which the University has from time to time. This page must form part of any such copies made.][The ownership of certain Copyright, patents, designs, trademarks and other intellectual property (the "Intellectual Property") and any reproductions of copyright works in the thesis, for example graphs and tables ("Reproductions"), which may be described in this thesis, may not be owned by the author and may be owned by third parties. Such Intellectual Property and Reproductions cannot and must not be made available for use without the prior written permission of the owner(s) of the relevant Intellectual Property and/or Reproductions.][Further information on the conditions under which disclosure, publication and commercialisation of this thesis, the Copyright and any Intellectual Property and/or Reproductions described in it may take place is available in the University IP Policy (see #link("http://documents.manchester.ac.uk/DocuInfo.aspx?DocID=24420")), in any relevant Thesis restriction declarations deposited in the University Library, The University Library’s regulations (see #link("http://www.library.manchester.ac.uk/about/regulations/")) and in The University’s policy on Presentation of Theses.]
+  enum[The author of this thesis (including any appendices and/or schedules to this thesis) owns certain copyright or related rights in it (the "Copyright") and they have given the University of Manchester certain rights to use such Copyright, including for administrative purposes.][Copies of this thesis, either in full or in extracts and whether in hard or electronic copy, may be made only in accordance with the Copyright, Designs and Patents Act 1988 (as amended) and regulations issued under it or, where appropriate, in accordance with licensing agreements which the University has from time to time. This page must form part of any such copies made.][The ownership of certain Copyright, patents, designs, trademarks and other intellectual property (the "Intellectual Property") and any reproductions of copyright works in the thesis, for example graphs and tables ("Reproductions"), which may be described in this thesis, may not be owned by the author and may be owned by third parties. Such Intellectual Property and Reproductions cannot and must not be made available for use without the prior written permission of the owner(s) of the relevant Intellectual Property and/or Reproductions.][Further information on the conditions under which disclosure, publication and commercialisation of this thesis, the Copyright and any Intellectual Property and/or Reproductions described in it may take place is available in the University IP Policy, in any relevant Thesis restriction declarations deposited in the University Library, the University Library's regulations and in the University's policy on the Presentation of Theses.]
   pagebreak()
+
+  // Optional pages (policy 9.1). Acknowledgements and similar have to come
+  // after the compulsory pages.
 
   if acknowledgements != none {
     heading(outlined: true, numbering: none, level: 1,[Acknowledgements])
@@ -343,6 +390,20 @@
     heading(outlined: true, numbering: none, level: 1,[The author])
     v(-5em) // added for Typst 0.13. Somewhat hacky. Not clear why spacing doesn't come from the heading correct without this. Will look at at some point
     theauthor
+    pagebreak()
+  }
+
+  if aideclaration != none {
+    heading(outlined: true, numbering: none, level: 1,[AI declaration])
+    v(-5em) // added for Typst 0.13. Somewhat hacky. Not clear why spacing doesn't come from the heading correct without this. Will look at at some point
+    aideclaration
+    pagebreak()
+  }
+
+  if contentnotification != none {
+    heading(outlined: true, numbering: none, level: 1,[Content notification])
+    v(-5em) // added for Typst 0.13. Somewhat hacky. Not clear why spacing doesn't come from the heading correct without this. Will look at at some point
+    contentnotification
     pagebreak()
   }
 

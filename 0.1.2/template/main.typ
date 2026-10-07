@@ -9,12 +9,18 @@
   faculty: "Science and Engineering",
   school: "School of Engineering",
   departmentordivision: "Department of Electrical and Electronic Engineering",
+  // degree: "Master of Philosophy", // the full title of the degree. Doctor of Philosophy if left out
+  // covidstatement: [COVID-19 impact statement goes here], // uncomment if want in thesis. It goes before the title page, and comes out of the final version after the examination
   abstract: [Abstract goes here],
   publications: [Publications go here.],
   //termsandabbreviations: [Enter terms and abbreviations as table or similar], // uncomment if want in thesis
   // layabstract: [Lay abstract goes here], // uncomment if want in thesis
   acknowledgements: [Acknowledgements go here.],
   // theauthor: [If desired, a brief statement for External Examiners giving the candidate’s degree(s) and research experience, even if the latter consists only of the work done for this thesis.], // uncomment if want in thesis
+  // declaration: [Say which part of the work has been submitted for another degree, including any jointly authored work], // uncomment to replace the standard declaration
+  // revisions: [List of thesis revisions goes here], // for a resubmitted thesis only. It goes before the title page, and comes out of the final version after the re-examination
+  // aideclaration: [AI declaration goes here], // uncomment if want in thesis
+  // contentnotification: [Content notification goes here], // uncomment if want in thesis
   year: "2024",
   font: "times", // choices are: "times", "palatino", "roboto", "noto_sans" 
   fontsize: 11pt, // can be any reasonable value

@@ -1,6 +1,6 @@
 # Typst PhD thesis template for the University of Manchester
 
-Typst template based upon [The University of Manchester Presentation of Theses Policy](https://documents.manchester.ac.uk/display.aspx?DocID=7420) which relates to the examination of doctoral and MPhil degrees at The University of Manchester and applies to full-time and part-time postgraduate research students of the following degrees: Doctoral degrees: Doctor of Philosophy (PhD); Doctor of Medicine (MD) Doctor of Business Administration (DBA); Professional, Engineering and Enterprise Doctorates; Master of Philosophy (MPhil). This template has been checked to be compliant with the 2024 requirements. Responsibility for ensuring compliance with the University of Manchester Presentation of Theses Policy remains with the candidate.
+Typst template based upon [The University of Manchester Presentation of Theses Policy](https://documents.manchester.ac.uk/display.aspx?DocID=7420) which relates to the examination of doctoral and MPhil degrees at The University of Manchester and applies to full-time and part-time postgraduate research students of the following degrees: Doctoral degrees: Doctor of Philosophy (PhD); Doctor of Medicine (MD) Doctor of Business Administration (DBA); Professional, Engineering and Enterprise Doctorates; Master of Philosophy (MPhil). This version has been updated for version 12 of the policy (March 2026). Responsibility for ensuring compliance with the University of Manchester Presentation of Theses Policy remains with the candidate.
 
 
 The template needs Typst 0.14 or later.
@@ -53,6 +53,8 @@ PDF/UA-1 needs alt text on every image and equation. main.typ shows how to add i
 
 ## Usage
 The template takes a number of options (e.g. font, font size, whether the optional front-matter items are displayed). These are detailed in main.typ and should be fairly obvious. 
+
+The preliminary pages follow the order in the policy. The COVID-19 impact statement (`covidstatement`), list of thesis revisions (`revisions`), AI declaration (`aideclaration`) and content notification (`contentnotification`) are only included if given. `declaration` replaces the standard declaration of originality, for when part of the work has been submitted for another degree, and `degree` sets the degree on the title page.
 
 Chapters and appendices start on a new page by themselves. A page break can't go inside a box, block or grid, so if a chapter heading has to, set `chapterbreak: false` in `uom-thesis` (and `#show: uom-appendix.with(chapterbreak: false)` for the appendices). The word count at the bottom of the contents page counts the main text only, as the policy asks: the chapters, including footnotes, but not the preliminary pages, the bibliography or the appendices.
 
