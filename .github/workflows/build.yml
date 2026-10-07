@@ -1,0 +1,66 @@
+name: Build the sample thesis
+
+# Builds the sample thesis from the newest version folder with each Typst
+# version the template supports, as a normal PDF and as an accessible
+# PDF/UA-1 one. A Typst warning fails the build, as well as an error.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:   # so it can be run by hand from the Actions tab
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        typst: ["0.14.2", "0.15.1"]   # the oldest the template supports, and the latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Set up Typst
+        uses: typst-community/setup-typst@40d32bb6ccb235bd7f5164cb47cfd40a5ea3a314  # v5.2.0
+        with:
+          typst-version: ${{ matrix.typst }}
+
+      - name: Install the TeX Gyre fonts
+        # The default font, TeX Gyre Termes, is built in to typst.app but isn't
+        # on the runner.
+        run: sudo apt-get update && sudo apt-get install --yes fonts-texgyre
+
+      - name: Build the sample thesis
+        run: |
+          set -o pipefail   # otherwise the tee hides a failed build
+          version=$(ls -d [0-9]*.[0-9]*.[0-9]* | sort -V | tail -n 1)
+          echo "Building $version with Typst ${{ matrix.typst }}"
+
+          # Put this version where Typst looks for @preview/casson-uom-thesis,
+          # so main.typ builds against it rather than the published one.
+          packages="$RUNNER_TEMP/packages"
+          mkdir -p "$packages/preview/casson-uom-thesis"
+          cp -r "$version" "$packages/preview/casson-uom-thesis/$version"
+
+          fonts=/usr/share/texmf/fonts/opentype/public/tex-gyre
+          cd "$version/template"
+          typst compile --package-path "$packages" --font-path "$fonts" main.typ main.pdf 2>&1 | tee typst.log
+          typst compile --package-path "$packages" --font-path "$fonts" --pdf-standard ua-1 main.typ main-ua1.pdf 2>&1 | tee -a typst.log
+          if grep -q "warning:" typst.log; then
+            echo "::error::Typst gave a warning"
+            exit 1
+          fi
+
+      - name: Upload the PDFs and the build log
+        if: always()   # the log is there to look at when a build fails
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: sample-thesis-typst-${{ matrix.typst }}
+          path: |
+            */template/main*.pdf
+            */template/typst.log
+          retention-days: 14

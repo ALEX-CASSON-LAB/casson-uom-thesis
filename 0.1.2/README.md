@@ -6,7 +6,7 @@ Typst template based upon [The University of Manchester Presentation of Theses P
 The template needs Typst 0.14 or later.
 
 ## Using the template on typst.app
-The template should ultimately be available on Typst Universe as casson_uom_thesis. Create an account at [Typst.app](https://typst.app/) and start a new project by clicking on Start from template and searching for casson_uom_thesis.
+The template is on [Typst Universe](https://typst.app/universe/package/casson-uom-thesis) as casson-uom-thesis. Create an account at [Typst.app](https://typst.app/) and start a new project by clicking on Start from template and searching for casson-uom-thesis.
 
 Alternatively, you can download files from the template repository and upload them to your project folder. If doing this, in main.typ comment out
 
@@ -24,7 +24,7 @@ If Typst Universe is online, the template will be downloaded automatically to
 
 when you run the command
 
-  `typst init @preview/cason-uom-thesis:$VERSION thesis_project_name`
+  `typst init @preview/casson-uom-thesis:$VERSION thesis_project_name`
 
 $VERSION should be 0.1.2. The value $CACHEDIR for your OS can be discovered from [https://docs.rs/dirs/latest/dirs/fn.cache_dir.html](https://docs.rs/dirs/latest/dirs/fn.cache_dir.html).
 
@@ -52,4 +52,8 @@ PDF/UA-1 needs alt text on every image and equation. main.typ shows how to add i
 
 
 ## Usage
-The template takes a number of options (e.g. font, font size, whether the optional front-matter items are displayed). These are detailed in main.typ and should be faily obvious. 
+The template takes a number of options (e.g. font, font size, whether the optional front-matter items are displayed). These are detailed in main.typ and should be fairly obvious. 
+
+Chapters and appendices start on a new page by themselves. A page break can't go inside a box, block or grid, so if a chapter heading has to, set `chapterbreak: false` in `uom-thesis` (and `#show: uom-appendix.with(chapterbreak: false)` for the appendices). The word count at the bottom of the contents page counts the main text only, as the policy asks: the chapters, including footnotes, but not the preliminary pages, the bibliography or the appendices.
+
+For a figure made of several parts, use `uom-subfigures`. It takes the same arguments as `subpar.grid` from the [subpar](https://typst.app/universe/package/subpar) package, and numbers the figure and its parts to match the rest of the thesis. main.typ has an example.

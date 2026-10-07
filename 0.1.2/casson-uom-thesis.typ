@@ -5,13 +5,13 @@
 //
 // Versions
 // 03.10.26 - v3 - accessibility fixes so the PDF passes Typst's PDF/UA-1 check (Typst 0.14 and later): the contents entries are styled with set rules so they stay valid outline entries, and the logo has alt text.
+//                 Also fixes for figures with no number, appendix numbering, labelled footnotes, and the word count, which now counts the main text only and sits at the bottom of the contents page. Chapters start on a new page, block quotes are indented, sub-figures are supported through uom-subfigures, and the language is British English.
 // 04.05.25 - v2 - added fixes for Typst 0.13 compatability. outline command changed, and some header spacing changed.
 // 30.12.24 - v1 - initial version. Fundamentally complete, but with a number of non-ideal and/or to-do items. Lots of items are hard coded.
 //
 // TODO
 // Space under Contents heading is too small, not like others
 // URL style
-// Indent on quotes
 // Fix table bottom row
 // Equation no. in text in wrong mode
 // Remove table/fig from LOT/LOF?
@@ -19,18 +19,17 @@
 // Improve code display
 // Add backref if feasible
 // Check on heading spacings
-// Page breaks before headers automatically
 // Add terms list for terms and abbreviations
 // Add ability to overrule declaration of originality
 // Find nicer way to enter abstract etc
-// Add in subfigure example
 // Add XMP copyright when can
 // Look into heading spacing after the heading. There are a number of manual fixes in the below
 
 
 
 // ------ ADD PACKAGES --------------------------------------------------
-#import "@preview/wordometer:0.1.4": word-count, total-words
+#import "@preview/wordometer:0.1.6": word-count, total-words
+#import "@preview/subpar:0.2.2"
 
 
 
@@ -43,6 +42,7 @@
   layabstract: none,
   acknowledgements: none,
   theauthor: none,
+  chapterbreak: true,
   author: "",
   faculty: none,
   year: none,
@@ -59,6 +59,7 @@
   
   // Document meta-data
   state("maincontent").update(true)
+  show <uom-count-only>: none // copies of text that only the word count sees (see uom-subfigures)
   set document(author: author, title: title)
 
   // Page size and numbering
@@ -87,7 +88,8 @@
   set text(
     font: font_actual, 
     size: fontsize,
-    lang: "en", // doesn't support en-GB yet
+    lang: "en",
+    region: "GB", // British English, for screen readers and the bibliography
   )
   set heading(numbering: "1.1")
   set par(leading: 1.2em) // line spacing
@@ -97,8 +99,11 @@
   
 // ------ HEADING STYLES ------------------------------------------------
 
-  // Level 1 for Chapters
+  // Level 1 for Chapters, each on a new page. A page break can't go inside a
+  // box, block or grid, so chapterbreak: false turns this off for a thesis
+  // that needs a chapter heading inside one (and uom-appendix takes it too).
   show heading.where(level: 1): it => {
+    if chapterbreak { pagebreak(weak: true) }
     v(2*2.26em)
     set align(left)
     set text(2.26em, weight: "bold")
@@ -181,16 +186,18 @@
     numbering("1.1", counter(heading).get().first(), num)
   )
 
-  // Set both the caption and references to use the custom settings
-  show figure: fig => {
+  // Caption labels, such as "Fig. 1.1." and "Table 1.1.", in bold. This is a
+  // caption rule rather than a figure rule, so that a figure with no number
+  // works, and so that subpar can label the parts of a sub-figure itself.
+  show figure.caption: it => {
+    if it.numbering == none { return it.body }
     let prefix = (
-      if fig.kind == table [Table]
-      else if fig.kind == image [#figure-supplement]
-      else [#fig.supplement]
+      if it.kind == table [Table]
+      else if it.kind == image [#figure-supplement]
+      else [#it.supplement]
     )
-    let numbers = numbering(fig.numbering, ..fig.counter.at(fig.location()))
-    show figure.caption: it => [#text(prefix + " " +  numbers + ".", weight: "bold") #it.body]
-    fig
+    let numbers = numbering(it.numbering, ..it.counter.at(it.location()))
+    [#text(prefix + " " +  numbers + ".", weight: "bold") #it.body]
   }
 
   // Equation numbering
@@ -207,11 +214,10 @@
     ["] + h(0pt, weak: true) + emph(it.body) + h(0pt, weak: true) + ["]
     if it.attribution != none [ #it.attribution]
   }
-  show quote.where(block: true): it => {
-    set pad(x: 10em)  
+  show quote.where(block: true): it => pad(x: 2.5em, { // indented both sides, as in LaTeX
     ["] + h(0pt, weak: true) + emph(it.body) + h(0pt, weak: true) + ["]
     if it.attribution != none [ #it.attribution]
-  }
+  })
 
 
 // ------ START OF DISPLAYED ITEMS --------------------------------------
@@ -258,9 +264,11 @@
     outline(depth: 3, indent: auto)
   }
 
-  // Add word count
-  show: word-count
-  align(right, block[
+  // Word count, at the bottom of the contents page (policy 8.1c). It counts
+  // the main text only (policy 4.6): the chapters, including footnotes, but
+  // not the preliminary pages, the bibliography or the appendices. The count
+  // is taken from the body at the end of this function.
+  align(right + bottom, block[
     #text("Word count: ",  weight: "bold")
     #text(total-words)
   ])
@@ -343,6 +351,7 @@
 // ------ MAIN BODY ---------------------------------------------
 
   set text(hyphenate: true)
+  show: word-count.with(exclude: <uom-appendices>)
   body
 }
 
@@ -350,30 +359,33 @@
 
 // ------ APPENDIX FORMATTING -------------------------------------------
 
-#let uom-appendix(body) = {
+// The label on the whole of the appendices keeps them out of the word count.
+// chapterbreak: false stops each appendix starting on a new page, as for the
+// chapters in uom-thesis.
+#let uom-appendix(body, chapterbreak: true) = [#{
   state("appendix").update(true)
 
-  // Change figure numbering to use a letter
+  // Change figure and equation numbering to use a letter. Anything before
+  // the first appendix heading is just numbered 1, 2 and so on.
   set figure(numbering: it => {
     let alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     let hdr = counter(heading).get().at(0)
-    [#alph.at(hdr - 1).#it]
+    if hdr == 0 { [#it] } else { [#alph.at(hdr - 1).#it] }
   })
-
-  // Reset counters for the per-chapter references
-  show heading.where(level: 1): hdr => {
-    counter(figure.where(kind:image)).update(0)
-    counter(figure.where(kind:table)).update(0)
-    hdr
-  }
+  set math.equation(numbering: num => {
+    let hdr = counter(heading).get().first()
+    if hdr == 0 { numbering("(1)", num) } else { numbering("(A.1)", hdr, num) }
+  })
 
   // Set headings to use Appendix letters
   // This can probably be tidied up, is largely a copy of what is above
   set heading(numbering: "A.1", supplement: [Appendix])
+  show heading.where(level: 1): set heading(supplement: [Appendix]) // otherwise references say Chapter A
   counter(heading).update(0)
   state("appendix").update(true)
 
   show heading.where(level: 1): it => {
+    if chapterbreak { pagebreak(weak: true) }
     v(2*2.26em)
     set align(left)
     set text(2.26em, weight: "bold")
@@ -404,8 +416,53 @@
     v(0.9em)
   }
 
+  // Reset counters for the per-appendix references. This has to come after
+  // the heading styles above: it then runs first and passes the heading on to
+  // them, whereas a rule before them is never reached.
+  show heading.where(level: 1): hdr => {
+    counter(math.equation).update(0)
+    counter(figure.where(kind: image)).update(0)
+    counter(figure.where(kind: table)).update(0)
+    counter(figure.where(kind: raw)).update(0)
+    hdr
+  }
+
   // Add appendicies heading and then add the content
   heading(outlined: true, numbering: none, level: 1,[Appendices])
   pagebreak()
   body
+} <uom-appendices>]
+
+
+
+// ------ SUB-FIGURES ---------------------------------------------------
+
+// A figure made of several parts, using the subpar package. It is numbered
+// like any other figure (Fig. 1.2, or Fig. A.2 in an appendix), the parts are
+// labelled (a), (b) and so on, and a reference to a part reads Fig. 1.2a. It
+// takes the same arguments as subpar.grid.
+#let uom-subfigures(..args) = {
+  // Numbers that follow the chapter, or the appendix letter
+  let by-chapter(main, appendix, before-appendix) = (..num) => {
+    let chapter = counter(heading).get().first()
+    if state("appendix").get() != true { numbering(main, chapter, ..num) }
+    else if chapter == 0 { numbering(before-appendix, ..num) }
+    else { numbering(appendix, chapter, ..num) }
+  }
+  let kind = args.named().at("kind", default: image)
+
+  // subpar draws the figure inside a context block, which the word count
+  // can't see into, so the word count gets a copy of the captions here.
+  // The copy is never shown.
+  [#block({
+    for part in args.pos() { if type(part) == content { part } }
+    args.named().at("caption", default: none)
+  })<uom-count-only>]
+
+  subpar.grid(
+    numbering: by-chapter("1.1", "A.1", "1"),
+    numbering-sub-ref: by-chapter("1.1a", "A.1a", "1a"),
+    ..if kind == image { (supplement: [Fig.]) },
+    ..args,
+  )
 }
