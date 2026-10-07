@@ -58,4 +58,8 @@ The preliminary pages follow the order in the policy. The COVID-19 impact statem
 
 Chapters and appendices start on a new page by themselves. A page break can't go inside a box, block or grid, so if a chapter heading has to, set `chapterbreak: false` in `uom-thesis` (and `#show: uom-appendix.with(chapterbreak: false)` for the appendices). The word count at the bottom of the contents page counts the main text only, as the policy asks: the chapters, including footnotes, but not the preliminary pages, the bibliography or the appendices.
 
+For a short caption in the list of figures or tables, use `caption: uom-flex-caption([The full caption.], [Short caption])`.
+
+While writing, set `draft: true`. It puts DRAFT across each page, and lets you use `#uom-todo[...]` for things still to do and `#uom-missing-figure([Caption])` for figures that haven't been made yet. They are listed at the end. Without draft mode the build stops if any are left, so none end up in the version that is handed in.
+
 For a figure made of several parts, use `uom-subfigures`. It takes the same arguments as `subpar.grid` from the [subpar](https://typst.app/universe/package/subpar) package, and numbers the figure and its parts to match the rest of the thesis. main.typ has an example.

@@ -7,6 +7,7 @@
 // 03.10.26 - v3 - accessibility fixes so the PDF passes Typst's PDF/UA-1 check (Typst 0.14 and later): the contents entries are styled with set rules so they stay valid outline entries, and the logo has alt text.
 //                 Also fixes for figures with no number, appendix numbering, labelled footnotes, and the word count, which now counts the main text only and sits at the bottom of the contents page. Chapters start on a new page, block quotes are indented, sub-figures are supported through uom-subfigures, and the language is British English.
 //                 Updated for version 12 of the Presentation of Theses Policy (March 2026): The University on the title page, a degree option, the COVID-19 impact statement, both forms of the declaration, the copyright wording, and pages for the list of thesis revisions, AI declaration and content notification.
+//                 Drafting tools: draft mode with DRAFT across each page, uom-todo and uom-missing-figure, and a check that none are left outside draft mode. Short captions for the lists of figures and tables (uom-flex-caption).
 // 04.05.25 - v2 - added fixes for Typst 0.13 compatability. outline command changed, and some header spacing changed.
 // 30.12.24 - v1 - initial version. Fundamentally complete, but with a number of non-ideal and/or to-do items. Lots of items are hard coded.
 //
@@ -16,7 +17,6 @@
 // Fix table bottom row
 // Equation no. in text in wrong mode
 // Remove table/fig from LOT/LOF?
-// Add support for short captions for LOT/LOF
 // Improve code display
 // Add backref if feasible
 // Check on heading spacings
@@ -30,6 +30,43 @@
 // ------ ADD PACKAGES --------------------------------------------------
 #import "@preview/wordometer:0.1.6": word-count, total-words
 #import "@preview/subpar:0.2.2"
+
+
+
+// ------ SHORT CAPTIONS ------------------------------------------------
+
+// A caption with a short form for the lists of figures and tables, like
+// \caption[short]{long} in LaTeX:
+//   caption: uom-flex-caption([The full caption under the figure.], [Short version])
+// The word count can't see inside a context block, so it gets a copy of the
+// long caption that is never shown.
+#let uom-in-outline = state("uom-in-outline", false)
+#let uom-flex-caption(long, short) = [#block(long)<uom-count-only>#context if uom-in-outline.get() { short } else { long }]
+
+
+
+// ------ DRAFTING TOOLS ------------------------------------------------
+
+// Notes and placeholders for while the thesis is being written. They are
+// allowed in draft mode, uom-thesis(draft: true), which also puts DRAFT across
+// every page and a list of what is left at the end. Outside draft mode they
+// stop the build, so none are left in the version that is handed in.
+
+// Something still to do, shown in red where it is: #uom-todo[Check this value]
+// It is only noted for the list once, not again where a heading or caption is
+// repeated in the contents or the list of figures.
+#let uom-todo(body) = [#context if not uom-in-outline.get() [#metadata(body)<uom-todo>]#text(fill: rgb("#c00000"), weight: "bold")[To do: #body]]
+
+// A placeholder for a figure that hasn't been made yet. It is numbered and
+// listed like any other figure, so references to it work.
+#let uom-missing-figure(caption) = figure(
+  rect(width: 60%, height: 4cm, stroke: (paint: luma(40%), dash: "dashed"), {
+    [#metadata(caption)<uom-missing-figure>]
+    align(center + horizon, text(fill: luma(40%))[Missing figure])
+  }),
+  alt: "Placeholder for a figure that is still to be made",
+  caption: caption,
+)
 
 
 
@@ -56,6 +93,7 @@
   contentnotification: none,
   font: "TeX Gyre Termes",
   fontsize: 12pt,
+  draft: false,
   body,
 ) = {
   
@@ -65,8 +103,8 @@
   
   // Document meta-data
   state("maincontent").update(true)
-  show <uom-count-only>: none // copies of text that only the word count sees (see uom-subfigures)
-  set document(author: author, title: title)
+  show <uom-count-only>: none // copies of text that only the word count sees (see uom-flex-caption and uom-subfigures)
+  set document(author: author, title: if draft { "DRAFT: " + title } else { title })
 
   // Page size and numbering
   set page(
@@ -74,6 +112,12 @@
     margin: (left: 40mm, right: 25mm, top: 15mm, bottom: 15mm),
     number-align: end,
   )
+
+  // DRAFT across each page in draft mode, marked as decoration so screen
+  // readers skip it
+  set page(background: if draft {
+    pdf.artifact(rotate(-45deg, text(100pt, fill: luma(90%), weight: "bold")[DRAFT]))
+  })
 
   // Fonts
   // Note the guidelines say "a font type and size which ensures readability must be used ... in a font such as Arial, Verdana, Tahoma,Trebuchet, Calibri, Times, Times New Roman, Palatino or Garamond". Only Times and Palatino are built in to Typst online. Roboto and Noto sans are added as options here which should satisfy this
@@ -294,6 +338,7 @@
   // These are set rules rather than a show rule that wraps each entry, so
   // the entries stay valid outline entries for screen readers (PDF/UA-1).
   show outline: set heading(outlined: true, numbering: none, level: 1)
+  show outline: it => { uom-in-outline.update(true); it; uom-in-outline.update(false) } // for uom-flex-caption
   {
     show outline.entry.where(level: 1): set outline.entry(fill: none)
     show outline.entry.where(level: 1): set block(above: 1.2em)
@@ -414,6 +459,22 @@
   set text(hyphenate: true)
   show: word-count.with(exclude: <uom-appendices>)
   body
+
+  // In draft mode, list the to-dos and missing figures at the end. Outside it,
+  // stop the build if there are any left.
+  context {
+    let left = query(selector(<uom-todo>).or(<uom-missing-figure>))
+    let pages = left.map(it => str(counter(page).at(it.location()).first())).dedup()
+    if draft and left.len() > 0 {
+      heading(outlined: false, bookmarked: true, numbering: none, level: 1, [Still to do])
+      for it in left {
+        let what = if it.label == <uom-todo> [To do] else [Missing figure]
+        [- #link(it.location())[Page #counter(page).at(it.location()).first()]: #what: #it.value]
+      }
+    }
+    let where = (if pages.len() == 1 { "on page " } else { "on pages " }) + pages.join(", ", last: " and ")
+    assert(draft or left.len() == 0, message: "the thesis still has to-dos or missing figures, " + where + ". Finish them, or use draft: true in uom-thesis while it is still being written")
+  }
 }
 
 
