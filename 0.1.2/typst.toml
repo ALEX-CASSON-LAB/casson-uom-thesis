@@ -1,5 +1,5 @@
 [package]
-name = "uom-thesis-casson"
+name = "casson-uom-thesis"
 version = "0.1.2"
 entrypoint = "uom-thesis-casson.typ"
 authors = ["Alex Casson <https://research.manchester.ac.uk/en/persons/alex.casson> and other contributors via github"]
