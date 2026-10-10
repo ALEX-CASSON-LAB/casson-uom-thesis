@@ -51,6 +51,15 @@ or, with Typst 0.15 or later, for a PDF that is both archival and accessible
 PDF/UA-1 needs alt text on every image and equation. main.typ shows how to add it.
 
 
+## Report types
+As well as theses, the template can be used for dissertations. Set `report` to:
+
+- `"thesis"`, the default, for a PhD, MPhil, MD, EngD or other doctorate, following the [Presentation of Theses Policy](https://documents.manchester.ac.uk/display.aspx?DocID=7420) (version 12, March 2026).
+- `"research-dissertation"` for an MSc by Research, following the [Presentation of PGR Dissertations Policy](https://documents.manchester.ac.uk/display.aspx?DocID=7441) (version 4.1, May 2025).
+- `"taught-dissertation"` for an undergraduate or taught masters dissertation, such as a BEng or MEng project report or an MSc dissertation, following the [Guidance for the Presentation of Taught Dissertations for UG and PGT Provision](https://documents.manchester.ac.uk/display.aspx?DocID=2863) (version 2.12, January 2016). The title page gives `studentid` instead of the name, or a list of IDs for a group project, and `degree` has to be given. The guidance asks for a font size of at least 12pt and an abstract of no more than 300 words.
+
+Your School may have its own rules on top of these, so check your course handbook as well.
+
 ## Usage
 The template takes a number of options (e.g. font, font size, whether the optional front-matter items are displayed). These are detailed in main.typ and should be fairly obvious. 
 

@@ -8,6 +8,7 @@
 //                 Also fixes for figures with no number, appendix numbering, labelled footnotes, and the word count, which now counts the main text only and sits at the bottom of the contents page. Chapters start on a new page, block quotes are indented, sub-figures are supported through uom-subfigures, and the language is British English.
 //                 Updated for version 12 of the Presentation of Theses Policy (March 2026): The University on the title page, a degree option, the COVID-19 impact statement, both forms of the declaration, the copyright wording, and pages for the list of thesis revisions, AI declaration and content notification.
 //                 Drafting tools: draft mode with DRAFT across each page, uom-todo and uom-missing-figure, and a check that none are left outside draft mode. Short captions for the lists of figures and tables (uom-flex-caption).
+//                 Report types: theses, MSc by Research dissertations and taught dissertations, each worded as in its own University document (uom-reports).
 // 04.05.25 - v2 - added fixes for Typst 0.13 compatability. outline command changed, and some header spacing changed.
 // 30.12.24 - v1 - initial version. Fundamentally complete, but with a number of non-ideal and/or to-do items. Lots of items are hard coded.
 //
@@ -70,6 +71,63 @@
 
 
 
+// ------ REPORT TYPES --------------------------------------------------
+
+// The wording that changes with the kind of report, picked with the report
+// option of uom-thesis. Each follows its own University document:
+//   thesis: PhD, MPhil, MD, EngD and the other doctorates. Presentation of
+//     Theses Policy, version 12, March 2026 (DocID 7420).
+//   research-dissertation: MSc by Research. Presentation of PGR Dissertations
+//     Policy, version 4.1, May 2025 (DocID 7441). Its title page statement
+//     follows the example title page in its Appendix 1.
+//   taught-dissertation: undergraduate and taught masters dissertations, such
+//     as BEng and MEng project reports and MSc dissertations. Guidance for the
+//     Presentation of Taught Dissertations for UG and PGT Provision, version
+//     2.12, January 2016 (DocID 2863).
+#let uom-reports = (
+  thesis: (
+    statement: "A thesis submitted to The University of Manchester for the degree of",
+    degree: "Doctor of Philosophy",
+    declaration: "I hereby confirm that no portion of the work referred to in the thesis has been submitted in support of an application for another degree or qualification of this or any other university or other institute of learning.",
+    rights-title: [Copyright statement],
+    rights: (
+      [The author of this thesis (including any appendices and/or schedules to this thesis) owns certain copyright or related rights in it (the "Copyright") and they have given the University of Manchester certain rights to use such Copyright, including for administrative purposes.],
+      [Copies of this thesis, either in full or in extracts and whether in hard or electronic copy, may be made only in accordance with the Copyright, Designs and Patents Act 1988 (as amended) and regulations issued under it or, where appropriate, in accordance with licensing agreements which the University has from time to time. This page must form part of any such copies made.],
+      [The ownership of certain Copyright, patents, designs, trademarks and other intellectual property (the "Intellectual Property") and any reproductions of copyright works in the thesis, for example graphs and tables ("Reproductions"), which may be described in this thesis, may not be owned by the author and may be owned by third parties. Such Intellectual Property and Reproductions cannot and must not be made available for use without the prior written permission of the owner(s) of the relevant Intellectual Property and/or Reproductions.],
+      [Further information on the conditions under which disclosure, publication and commercialisation of this thesis, the Copyright and any Intellectual Property and/or Reproductions described in it may take place is available in the University IP Policy, in any relevant Thesis restriction declarations deposited in the University Library, the University Library's regulations and in the University's policy on the Presentation of Theses.],
+    ),
+    revisions-title: [List of thesis revisions],
+  ),
+  research-dissertation: (
+    statement: "A dissertation submitted to The University of Manchester for the degree of",
+    degree: "Master of Science by Research",
+    declaration: "I hereby confirm that no portion of the work referred to in the dissertation has been submitted in support of an application for another degree or qualification of this or any other university or other institute of learning.",
+    rights-title: [Copyright statement],
+    rights: (
+      [The author of this dissertation (including any appendices and/or schedules to this dissertation) owns certain copyright or related rights in it (the "Copyright") and they have given the University of Manchester certain rights to use such Copyright, including for administrative purposes.],
+      [Copies of this dissertation, either in full or in extracts and whether in hard or electronic copy, may be made only in accordance with the Copyright, Designs and Patents Act 1988 (as amended) and regulations issued under it or, where appropriate, in accordance with licensing agreements which the University has from time to time. This page must form part of any such copies made.],
+      [The ownership of certain Copyright, patents, designs, trademarks and other intellectual property (the "Intellectual Property") and any reproductions of copyright works in the dissertation, for example graphs and tables ("Reproductions"), which may be described in this dissertation, may not be owned by the author and may be owned by third parties. Such Intellectual Property and Reproductions cannot and must not be made available for use without the prior written permission of the owner(s) of the relevant Intellectual Property and/or Reproductions.],
+      [Further information on the conditions under which disclosure, publication and commercialisation of this dissertation, the Copyright and any Intellectual Property and/or Reproductions described in it may take place is available in the University IP Policy, in any relevant Dissertation restriction declarations deposited in the University Library, the University Library's regulations and in the University's policy on the Presentation of Dissertations.],
+    ),
+    revisions-title: [List of dissertation revisions],
+  ),
+  taught-dissertation: (
+    statement: "A dissertation submitted to The University of Manchester for the degree of",
+    degree: none, // has to be given, such as Bachelor of Engineering
+    declaration: "I hereby confirm that this dissertation is my own original work unless referenced clearly to the contrary, and that no portion of the work referred to in the dissertation has been submitted in support of an application for another degree or qualification of this or any other university or other institute of learning.",
+    rights-title: [Intellectual property statement],
+    rights: (
+      [The author of this dissertation (including any appendices and/or schedules to this dissertation) owns certain copyright or related rights in it (the "Copyright") and they have given The University of Manchester certain rights to use such Copyright, including for administrative purposes.],
+      [Copies of this dissertation, either in full or in extracts and whether in hard or electronic copy, may be made only in accordance with the Copyright, Designs and Patents Act 1988 (as amended) and regulations issued under it or, where appropriate, in accordance with licensing agreements which the University has entered into. This page must form part of any such copies made.],
+      [The ownership of certain Copyright, patents, designs, trademarks and other intellectual property (the "Intellectual Property") and any reproductions of copyright works in the dissertation, for example graphs and tables ("Reproductions"), which may be described in this dissertation, may not be owned by the author and may be owned by third parties. Such Intellectual Property and Reproductions cannot and must not be made available for use without the prior written permission of the owner(s) of the relevant Intellectual Property and/or Reproductions.],
+      [Further information on the conditions under which disclosure, publication and commercialisation of this dissertation, the Copyright and any Intellectual Property and/or Reproductions described in it may take place is available in the University IP Policy, in any relevant Dissertation restriction declarations deposited in the University Library, and The University Library's regulations.],
+    ),
+    revisions-title: [List of dissertation revisions],
+  ),
+)
+
+
+
 // ------ DEFINE ARGUMENTS ----------------------------------------------
 #let uom-thesis(
   title: "",
@@ -85,7 +143,9 @@
   year: none,
   school: none,
   departmentordivision: none,
-  degree: "Doctor of Philosophy",
+  report: "thesis",
+  studentid: none,
+  degree: auto,
   covidstatement: none,
   declaration: none,
   revisions: none,
@@ -101,10 +161,20 @@
   
 // ------ SETUP DOCUMENT ------------------------------------------------
   
-  // Document meta-data
+  // Report type
+  assert(report in uom-reports, message: "report should be one of " + uom-reports.keys().join(", "))
+  let kind = uom-reports.at(report)
+  let degree = if degree == auto { kind.degree } else { degree }
+  let taught = report == "taught-dissertation"
+  assert(degree != none, message: "give the degree in full for the title page, such as degree: \"Bachelor of Engineering\"")
+  assert(not taught or studentid != none, message: "a taught dissertation gives the student ID on the title page instead of the name, so give studentid")
+  assert(not taught or fontsize >= 12pt, message: "a taught dissertation needs a font size of at least 12pt")
+
+  // Document meta-data. A taught dissertation leaves the name out, as it goes
+  // by student ID.
   state("maincontent").update(true)
   show <uom-count-only>: none // copies of text that only the word count sees (see uom-flex-caption and uom-subfigures)
-  set document(author: author, title: if draft { "DRAFT: " + title } else { title })
+  set document(author: if taught { () } else { author }, title: if draft { "DRAFT: " + title } else { title })
 
   // Page size and numbering
   set page(
@@ -276,12 +346,12 @@
 
 // ------ LIST OF THESIS REVISIONS --------------------------------------
 
-  // For a resubmitted thesis only. It goes before the title page and any
-  // COVID-19 impact statement, and is taken out of the final version after
-  // the re-examination (policy 8.1h). Like the impact statement it has no
-  // page number.
+  // For a resubmitted thesis or dissertation only. It goes before the title
+  // page and any COVID-19 impact statement, and is taken out of the final
+  // version after the re-examination (policy 8.1h). Like the impact statement
+  // it has no page number.
   if revisions != none {
-    heading(outlined: false, bookmarked: true, numbering: none, level: 1, [List of thesis revisions])
+    heading(outlined: false, bookmarked: true, numbering: none, level: 1, kind.revisions-title)
     v(-5em) // as for the preliminary pages below
     revisions
     pagebreak()
@@ -314,12 +384,18 @@
   set align(center)
   text(1.44em, weight: "bold", title)
   v(1fr)
-  text(1em, "A thesis submitted to The University of Manchester for the degree of \n " + degree + " \n in the Faculty of ")
+  text(1em, kind.statement + " \n " + degree + " \n in the Faculty of ")
   text(1em, faculty)
   v(1fr)
   text(1em, year)
   v(1fr)  
-  text(1em, author)
+  if taught {
+    // The student ID instead of the name, or one ID per line for a group
+    let ids = if type(studentid) == array { studentid } else { (studentid,) }
+    text(1em, ids.map(id => [#id]).join(linebreak()))
+  } else {
+    text(1em, author)
+  }
   v(1em, weak: true)
   text(1em, school)
   v(1em, weak: true)
@@ -410,15 +486,17 @@
   if declaration != none {
     declaration
   } else {
-    "I hereby confirm that no portion of the work referred to in the thesis has been submitted in support of an application for another degree or qualification of this or any other university or other institute of learning."
+    kind.declaration
   }
   
-  // Copyright statement, worded as in version 12 of the policy (8.1g)
+  // Copyright statement, or intellectual property statement for a taught
+  // dissertation, worded as in the document for the report type (see
+  // uom-reports at the top)
   pagebreak()
-  heading(outlined: true, numbering: none, level: 1,[Copyright statement])
+  heading(outlined: true, numbering: none, level: 1, kind.rights-title)
   v(-5em) // added for Typst 0.13. Somewhat hacky. Not clear why spacing doesn't come from the heading correct without this. Will look at at some point
   set enum(numbering: "i.")
-  enum[The author of this thesis (including any appendices and/or schedules to this thesis) owns certain copyright or related rights in it (the "Copyright") and they have given the University of Manchester certain rights to use such Copyright, including for administrative purposes.][Copies of this thesis, either in full or in extracts and whether in hard or electronic copy, may be made only in accordance with the Copyright, Designs and Patents Act 1988 (as amended) and regulations issued under it or, where appropriate, in accordance with licensing agreements which the University has from time to time. This page must form part of any such copies made.][The ownership of certain Copyright, patents, designs, trademarks and other intellectual property (the "Intellectual Property") and any reproductions of copyright works in the thesis, for example graphs and tables ("Reproductions"), which may be described in this thesis, may not be owned by the author and may be owned by third parties. Such Intellectual Property and Reproductions cannot and must not be made available for use without the prior written permission of the owner(s) of the relevant Intellectual Property and/or Reproductions.][Further information on the conditions under which disclosure, publication and commercialisation of this thesis, the Copyright and any Intellectual Property and/or Reproductions described in it may take place is available in the University IP Policy, in any relevant Thesis restriction declarations deposited in the University Library, the University Library's regulations and in the University's policy on the Presentation of Theses.]
+  enum(..kind.rights)
   pagebreak()
 
   // Optional pages (policy 9.1). Acknowledgements and similar have to come
