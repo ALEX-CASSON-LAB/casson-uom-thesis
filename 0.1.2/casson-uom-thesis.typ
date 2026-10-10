@@ -129,6 +129,13 @@
 
 
 // ------ DEFINE ARGUMENTS ----------------------------------------------
+// The text of a chapter, section or sub-section heading. It is a block rather
+// than a paragraph, because tagged PDF 2.0 (and so PDF/UA-2) does not allow a
+// paragraph inside a heading. With above and below set to auto the block is
+// spaced like a paragraph, where a block in a heading would otherwise take the
+// heading's own spacing and stick to what follows, so nothing moves.
+#let uom-heading-text(body) = block(above: auto, below: auto, sticky: false, body)
+
 #let uom-thesis(
   title: "",
   abstract: [],
@@ -228,10 +235,10 @@
     set align(left)
     set text(2.26em, weight: "bold")
     if it.numbering != none {
-      text("Chapter " + counter(heading).display("1") + "\n" + it.body)
+      uom-heading-text("Chapter " + counter(heading).display("1") + "\n" + it.body)
       v(-0.5em)
     } else {
-      text(it.body)
+      uom-heading-text(it.body)
       v(1em)
     }
     //v(1em)
@@ -244,9 +251,9 @@
     set align(left)
     set text(1.3em, weight: "bold")
     if it.numbering != none {
-      text(counter(heading).display("1.1") + " " + it.body)
+      uom-heading-text(counter(heading).display("1.1") + " " + it.body)
     } else {
-      text(it.body)
+      uom-heading-text(it.body)
     }    
     //v(0.77em)
   }
@@ -256,7 +263,7 @@
     v(1.1em)
     set align(left)
     set text(1.1em, weight: "bold")
-    text(counter(heading).display("1.1") + " " + it.body)
+    uom-heading-text(counter(heading).display("1.1") + " " + it.body)
   }
 
   // Not numbered below level 3
@@ -590,9 +597,9 @@
     set align(left)
     set text(2.26em, weight: "bold")
     if it.numbering != none {
-      text("Appendix " + counter(heading).display("A") + "\n" + it.body)
+      uom-heading-text("Appendix " + counter(heading).display("A") + "\n" + it.body)
     } else {
-      text(it.body)
+      uom-heading-text(it.body)
     }  
     v(0.22em)
   }
@@ -601,9 +608,9 @@
     set align(left)
     set text(1.3em, weight: "bold")
     if it.numbering != none {
-      text(counter(heading).display("A.1") + " " + it.body)
+      uom-heading-text(counter(heading).display("A.1") + " " + it.body)
     } else {
-      text(it.body)
+      uom-heading-text(it.body)
     }    
     v(0.77em)
   }
@@ -612,7 +619,7 @@
     v(1.1em)
     set align(left)
     set text(1.1em, weight: "bold")
-    text(counter(heading).display("A.1") + " " + it.body)
+    uom-heading-text(counter(heading).display("A.1") + " " + it.body)
     v(0.9em)
   }
 
