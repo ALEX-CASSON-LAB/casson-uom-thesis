@@ -16,6 +16,8 @@ and instead uncomment
 
   `//#import "casson-uom-thesis.typ": *`
 
+Fonts
+
 
 ## Local installation
 If Typst Universe is online, the template will be downloaded automatically to
