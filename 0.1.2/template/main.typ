@@ -4,9 +4,10 @@
 
 
 
+
 // ------ TEMPLATE SETUP ------------------------------------------------
-#import "@preview/casson-uom-thesis:0.1.2": *
-//#import "uom-thesis-casson.typ": * // for local installation use
+//#import "@preview/casson-uom-thesis:0.1.2": *
+#import "uom-thesis-casson.typ": * // for local installation use
 
 
 // Set up the project. Commented out fields are optional
@@ -16,27 +17,44 @@
   faculty: "Science and Engineering",
   school: "School of Engineering",
   departmentordivision: "Department of Electrical and Electronic Engineering",
-  // report: "taught-dissertation", // for a BEng, MEng or taught MSc dissertation, or "research-dissertation" for an MSc by Research, or "continuation-report". Defaults to "thesis for PhD if left out
-  // continuationyear: 1, // 1, 2, 3 for 1st, 2nd, or 3rd year PhD progression report. Required when report is continuation-report 
-  // studentid: "12345", // a taught dissertation shows the student ID instead of the name. For a group, give a list: ("12345678", "23456789")
-  // degree: "Master of Philosophy", // the full title of the degree. If left out, Doctor of Philosophy for a thesis or Master of Science by Research for an MSc by Research. It has to be given for a taught dissertation
-  // covidstatement: [COVID-19 impact statement goes here], // uncomment if want in thesis. It goes before the title page, and comes out of the final version after the examination
+  // report: "taught-dissertation", 
+      // Options: "thesis" for PhD thesis; "continuation-report" for PhD progress report; "taught-dissertation" for a BEng, MEng or taught MSc dissertation; "research-dissertation" for an MSc by Research. Defaults to "thesis" for PhD if left out
+  // continuationyear: 1, 
+      // 1, 2, 3 for 1st, 2nd, or 3rd year PhD progression report. Required when report is continuation-report. Not used for other report types
+  //studentid: "123456", 
+      // A taught dissertation shows the student ID instead of the name. For a group, give a list: ("12345678", "23456789")
+  //degree: "Master of Philosophy", 
+      // the full title of the degree. If left out, defaults to Doctor of Philosophy for a thesis or Master of Science by Research for an MSc by Research. It has to be given for a taught dissertation
+  //covidstatement: [COVID-19 impact statement goes here], 
+      // Uncomment if want in thesis. It goes before the title page, and comes out of the final version after the examination
   abstract: [Abstract goes here],
   keywords: ("Keyword 1", "Keyword 2", "Keyword 3"),
   publications: [Publications go here],
-  //termsandabbreviations: [Enter terms and abbreviations as table or similar], // uncomment if want in thesis
-  // layabstract: [Lay abstract goes here], // uncomment if want in thesis
+  //termsandabbreviations: [Enter terms and abbreviations as table or similar], 
+      // Optional. Uncomment if want in thesis
+  //layabstract: [Lay abstract goes here], 
+      // Optional. Uncomment if want in thesis
   acknowledgements: [Acknowledgements go here],
-  // theauthor: [If desired, a brief statement for External Examiners giving the candidate’s degree(s) and research experience, even if the latter consists only of the work done for this thesis.], // uncomment if want in thesis
-  // declaration: [Say which part of the work has been submitted for another degree, including any jointly authored work], // uncomment to replace the standard declaration
-  // revisions: [List of thesis revisions goes here], // for a resubmitted thesis only. It goes before the title page, and comes out of the final version after the re-examination
-  // aideclaration: [AI declaration goes here], // uncomment if want in thesis
-  // contentnotification: [Content notification goes here], // uncomment if want in thesis
+      // Optional. Uncomment if want in thesis
+  //theauthor: [If desired, a brief statement for External Examiners giving the candidate’s degree(s) and research experience, even if the latter consists only of the work done for this thesis.], 
+      // Optional. Uncomment if want in thesis
+  //declaration: [Say which part of the work has been submitted for another degree, including any jointly authored work], 
+      // Uncomment if you want to override the default text
+  //revisions: [List of thesis revisions goes here], 
+      // For a resubmitted thesis only. It goes before the title page, and comes out of the final version after the re-examination
+  //aideclaration: [AI declaration goes here], 
+      // Optional. Uncomment if want in thesis
+  //contentnotification: [Content notification goes here],
+      // Optional. Uncomment if want in thesis
   year: "2026",
-  font: "times", // choices are: "times", "palatino", "roboto", "noto_sans" 
-  fontsize: 12pt, // can be any reasonable value, though the policy recommends 12pt, and a taught dissertation needs at least 12pt
-  // draft: true, // while writing: puts DRAFT across each page, and allows #uom-todo[...] and #uom-missing-figure([...])
-  //printmargins: true, // puts a larger margin on the left side so the text is still readable when the thesis is printed and bound on the left
+  font: "times", 
+      // Suggest: "times" or "helvetica", but the template accepts a number more options (see uom-thesis-casson.typ for list). Just because the template supports and option, doesn't neceseaarily mean your computer has that font installed and avaiable for use
+  fontsize: 12pt, 
+      // Can be any reasonable value, though the policy recommends 12pt, and a taught dissertation needs at least 12pt
+  //draft: true, 
+      // While writing: puts DRAFT across each page, and allows #uom-todo[...] and #uom-missing-figure([...])
+  //printmargins: true, 
+      // Puts a larger margin on the left side so the text is still readable when the thesis is printed and bound on the left
 )
 
 
