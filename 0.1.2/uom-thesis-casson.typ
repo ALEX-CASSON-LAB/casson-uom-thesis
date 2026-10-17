@@ -45,7 +45,7 @@
 #let uom-logo-width = 40.006mm
 
 #let uom-margin-left = 20mm
-left uom-margin-left-print = 40mm
+#let uom-margin-left-print = 40mm
 #let uom-margin-right = 20mm
 #let uom-margin-top = 20mm
 #let uom-margin-bottom = 20mm
