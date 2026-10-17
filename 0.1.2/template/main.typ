@@ -1,7 +1,6 @@
 // ------ USAGE INSTRUCTIONS ---------------------------------------------
 
-// Link to the presentation of theses policy: http://www.regulations.manchester.ac.uk/pgr-presentation-theses/
-// This template has been checked to be compliant with the requirements. Nevertheless, responsibility for ensuring compliance with the University of Manchester Presentation of Theses Policy remains with the candidate.
+// This template has been checked to be compliant with general University presentation requirements. Nevertheless, responsibility for ensuring compliance with all applicable policies remains with the candidate.
 
 
 
